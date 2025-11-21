@@ -14,6 +14,11 @@ messages = [
     types.Content(role="user", parts=[types.Part(text=user_prompt)]),
 ]
 
+verbose = len(args) > 2 and args[2] == '--verbose'
+
+if verbose:
+    print(f'User prompt: {messages}')
+
 load_dotenv()
 api_key = os.environ.get("GEMINI_API_KEY")
 
@@ -24,5 +29,6 @@ response = client.models.generate_content(
 )
 print(response.text)
 
-print(f'Prompt tokens: {response.usage_metadata.prompt_token_count}')
-print(f'Response tokens: {response.usage_metadata.candidates_tokens_details[0].token_count}')
+if verbose:
+    print(f'Prompt tokens: {response.usage_metadata.prompt_token_count}')
+    print(f'Response tokens: {response.usage_metadata.candidates_tokens_details[0].token_count}')
